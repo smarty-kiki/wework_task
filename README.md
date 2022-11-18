@@ -1,4 +1,4 @@
-# mvc_frame
+# wework_task
 由 [frame](https://github.com/smarty-kiki/frame#frame) 框架衍生的单层 MVC 框架, 供快速开发使用
 
 ## 目录结构及文件说明
@@ -31,12 +31,12 @@
 │   ├── config (配置文件目录)  
 │   │   ├── development (开发环境)  
 │   │   │   ├── nginx (nginx 配置)  
-│   │   │   │   └── mvc_frame.conf (框架推荐的 nginx 配置)  
+│   │   │   │   └── wework_task.conf (框架推荐的 nginx 配置)  
 │   │   │   └── supervisor  (supervisor 配置)  
 │   │   │       └── queue_worker.conf (worker 的管理配置)  
 │   │   └── production (线上环境)   
 │   │       ├── nginx  
-│   │       │   └── mvc_frame.conf  
+│   │       │   └── wework_task.conf  
 │   │       └── supervisor  
 │   │           └── queue_worker.conf  
 │   ├── tool (工具脚本目录)  
