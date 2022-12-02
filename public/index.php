@@ -61,6 +61,7 @@ if_verify(function ($action, $args) {
 });
 
 // init interceptor
+include INTERCEPTOR_DIR.'/work_wechat.php';
 
 // init 404 handler
 if_not_found(function () {
