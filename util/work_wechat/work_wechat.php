@@ -4,6 +4,8 @@ const WORK_WECHAT_API_PREFIX = 'https://qyapi.weixin.qq.com/cgi-bin';
 const WORK_WECHAT_ERRCODE_SUCCESS = 0;
 const WORK_WECHAT_ERRCODE_ACCESS_TOKEN_EXPIRED = 42001;
 
+const WORK_WECHAT_LOG_MODULE = 'work_wechat';
+
 function work_wechat_if_res_success($res)
 {/*{{{*/
     return $res['errcode'] == WORK_WECHAT_ERRCODE_SUCCESS;
@@ -35,12 +37,14 @@ function _work_wechat_closure(closure $action)
             $res = _work_wechat_get_access_token();
             if (work_wechat_if_res_success($res)) {
                 $access_token = $res['access_token'];
+                cache_set('work_wechat_access_token', $access_token);
             } else {
                 return $res;
             }
         }
 
         $res = call_user_func($action, $access_token);
+        log_module(WORK_WECHAT_LOG_MODULE, print_r($res, true));
         if ($res['errcode'] == WORK_WECHAT_ERRCODE_ACCESS_TOKEN_EXPIRED) {
             $access_token = null;
         } else {
