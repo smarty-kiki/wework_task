@@ -41,10 +41,10 @@ wx.error(function(res){ });
 wx.config({
     beta: true,
     debug: true,
-    appId: '{{ $config["corpid"] }}',
+    appId: "{{ $config['corpid'] }}",
     timestamp: {{ $signature_info['timestamp'] }},
-    nonceStr: {{ $signature_info['nonce_str'] }},
-    signature: {{ $signature_info['signature'] }},
+    nonceStr: "{{ $signature_info['nonce_str'] }}",
+    signature: "{{ $signature_info['signature'] }}",
     jsApiList: ["selectEnterpriseContact"]
 });
 </script>
