@@ -78,7 +78,7 @@ function work_wechat_get_js_sdk_signature_info($url)
     $jsapi_ticket = work_wechat_get_jsapi_ticket();
     $nonceStr = time();
     $timestamp = time();
-    $signature = sprintf('jsapi_ticket=%s&noncestr=%s&timestamp=%s&url=%s', $jsapi_ticket, $nonceStr, $timestamp, $url);
+    $signature = sha1(sprintf('jsapi_ticket=%s&noncestr=%s&timestamp=%s&url=%s', $jsapi_ticket, $nonceStr, $timestamp, $url));
 
     return [
         'jsapi_ticket' => $jsapi_ticket,
