@@ -35,6 +35,7 @@ function _work_wechat_closure(closure $action)
 
         if (is_null($access_token)) {
             $res = _work_wechat_get_access_token();
+            log_module(WORK_WECHAT_LOG_MODULE, print_r($res, true));
             if (work_wechat_if_res_success($res)) {
                 $access_token = $res['access_token'];
                 cache_set('work_wechat_access_token', $access_token);
