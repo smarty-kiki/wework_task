@@ -3,12 +3,13 @@
 if_get('/', function ()
 {
     $user_id = get_work_wechat_client_user();
-    echo '<pre>';var_dump($user_id);exit;
+    $config = config('work_wechat');
+    $signature_info = work_wechat_get_js_sdk_signature_info(uri());
 
     return render('index/index', [
-        'title' => 'hello world',
-        'url_infos' => [
-        ],
+        'user_id' => $user_id,
+        'config'  => $config,
+        'signature_info' => $signature_info,
     ]);
 });
 

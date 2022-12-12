@@ -59,17 +59,10 @@ function work_wechat_get_user_info($code)
     $config = config('work_wechat');
 
     return _work_wechat_closure(function ($access_token) use ($code) {
-        log_module(WORK_WECHAT_LOG_MODULE, print_r($access_token, true));
-        log_module(WORK_WECHAT_LOG_MODULE, WORK_WECHAT_API_PREFIX.'/auth/getuserinfo?'.http_build_query([
+        return http_json(WORK_WECHAT_API_PREFIX.'/auth/getuserinfo?'.http_build_query([
             'access_token' => $access_token,
             'code'         => $code,
         ]));
-        $a = http_json(WORK_WECHAT_API_PREFIX.'/auth/getuserinfo?'.http_build_query([
-            'access_token' => $access_token,
-            'code'         => $code,
-        ]));
-        log_module(WORK_WECHAT_LOG_MODULE, print_r($a, true));
-        return $a;
     });
 }/*}}}*/
 
@@ -78,4 +71,75 @@ function work_wechat_build_oauth_redirect_url($url)
     $work_wechat_config = config('work_wechat');
 
     return 'https://open.weixin.qq.com/connect/oauth2/authorize?appid='.$work_wechat_config['corpid'].'&redirect_uri='.urlencode($url).'&response_type=code&scope=snsapi_base&state=1#wechat_redirect';
+}/*}}}*/
+
+function work_wechat_get_js_sdk_signature_info($url)
+{/*{{{*/
+    $jsapi_ticket = work_wechat_get_jsapi_ticket();
+    $nonceStr = time();
+    $timestamp = time();
+    $signature = printf('jsapi_ticket=%s&noncestr=%s&timestamp=%s&url=%s', $jsapi_ticket, $nonceStr, $timestamp, $url);
+
+    return [
+        'jsapi_ticket' => $jsapi_ticket,
+        'nonce_str'    => $nonceStr,
+        'timestamp'    => $timestamp,
+        'signature'    => $signature,
+    ];
+}/*}}}*/
+
+function work_wechat_get_jsapi_ticket()
+{/*{{{*/
+    static $ticket = null;
+
+    if (is_null($ticket)) {
+        $ticket = cache_get('work_wechat_jsapi_ticket');
+    }
+
+    if (empty($ticket)) {
+
+        $res = _work_wechat_closure(function ($access_token) {
+            return http_json(WORK_WECHAT_API_PREFIX.'/get_jsapi_ticket?'.http_build_query([
+                'access_token' => $access_token,
+            ]));
+        });
+
+        otherwise_error_code('WORK_WECHAT_CLIENT_EXCEPTION', work_wechat_if_res_success($res), [
+            'code'    => $res['errcode'],
+            'message' => $res['errmsg'],
+        ]);
+
+        $ticket = $res['ticket'];
+        cache_set('work_wechat_jsapi_ticket', $ticket, ($res['expires_in'] - 1));
+    }
+
+    return $ticket;
+}/*}}}*/
+
+function work_wechat_get_app_jsapi_ticket()
+{/*{{{*/
+    static $ticket = null;
+
+    if (is_null($ticket)) {
+        $ticket = cache_get('work_wechat_jsapi_ticket');
+    }
+
+    if (empty($ticket)) {
+
+        $res = _work_wechat_closure(function ($access_token) {
+            return http_json(WORK_WECHAT_API_PREFIX.'/get_jsapi_ticket?'.http_build_query([
+                'access_token' => $access_token,
+            ]));
+        });
+
+        otherwise_error_code('WORK_WECHAT_CLIENT_EXCEPTION', work_wechat_if_res_success($res), [
+            'code'    => $res['errcode'],
+            'message' => $res['errmsg'],
+        ]);
+
+        $ticket = $res['ticket'];
+        cache_set('work_wechat_jsapi_ticket', $ticket, ($res['expires_in'] - 1));
+    }
+
+    return $ticket;
 }/*}}}*/
