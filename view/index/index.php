@@ -38,7 +38,7 @@ wx.error(function(res){ });
 
 wx.config({
     beta: true,
-    debug: true,
+    debug: false,
     appId: "{{ $config['corpid'] }}",
     timestamp: {{ $signature_info['timestamp'] }},
     nonceStr: "{{ $signature_info['nonce_str'] }}",
