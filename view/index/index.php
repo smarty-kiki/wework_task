@@ -6,7 +6,7 @@
 </head>
 <body>
 
-<input type="button" onclick="abc();">
+<div style="width: 500px; heigh: 500px; color: red;" onclick="abc();" >abc</div>
 
 <script src="//res.wx.qq.com/open/js/jweixin-1.2.0.js"></script>
 <script>
