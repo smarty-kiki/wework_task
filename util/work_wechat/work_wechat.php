@@ -35,7 +35,6 @@ function _work_wechat_closure(closure $action)
 
         if (empty($access_token)) {
             $res = _work_wechat_get_access_token();
-            log_module(WORK_WECHAT_LOG_MODULE, print_r($res, true));
             if (work_wechat_if_res_success($res)) {
                 $access_token = $res['access_token'];
                 cache_set('work_wechat_access_token', $access_token);
@@ -45,7 +44,6 @@ function _work_wechat_closure(closure $action)
         }
 
         $res = call_user_func($action, $access_token);
-        log_module(WORK_WECHAT_LOG_MODULE, print_r($access_token, true));
         log_module(WORK_WECHAT_LOG_MODULE, print_r($res, true));
         if ($res['errcode'] == WORK_WECHAT_ERRCODE_ACCESS_TOKEN_EXPIRED) {
             $access_token = null;
