@@ -33,7 +33,7 @@ function _work_wechat_closure(closure $action)
     while ($expire_retry > 0) {
         $expire_retry --;
 
-        if (is_null($access_token)) {
+        if (empty($access_token)) {
             $res = _work_wechat_get_access_token();
             log_module(WORK_WECHAT_LOG_MODULE, print_r($res, true));
             if (work_wechat_if_res_success($res)) {
