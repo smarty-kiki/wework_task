@@ -60,10 +60,13 @@ function work_wechat_get_user_info($code)
     $config = config('work_wechat');
 
     return _work_wechat_closure(function ($access_token) use ($code) {
-        return http_json(WORK_WECHAT_API_PREFIX.'/getuserinfo?'.http_build_query([
+        log_module(WORK_WECHAT_LOG_MODULE, print_r($access_token, true));
+        $a = http_json(WORK_WECHAT_API_PREFIX.'/getuserinfo?'.http_build_query([
             'access_token' => $access_token,
             'code'         => $code,
         ]));
+        log_module(WORK_WECHAT_LOG_MODULE, print_r($a, true));
+        return $a;
     });
 }/*}}}*/
 
