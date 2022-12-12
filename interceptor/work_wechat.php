@@ -1,15 +1,17 @@
 <?php
 
+const USERID_COOKIE_NAME = 'user_id';
+
 function get_work_wechat_client_user()
 {/*{{{*/
-    static $userid = null;
+    static $user_id = null;
 
-    if (is_null($userid)) {
+    if (is_null($user_id)) {
 
-        $userid = cookie('userid');
+        $user_id = cookie(USERID_COOKIE_NAME);
     }
 
-    if (is_null($userid)) {
+    if (is_null($user_id)) {
         $code = input('code');
         if (not_null($code)) {
             $res = work_wechat_get_user_info($code);
@@ -20,14 +22,15 @@ function get_work_wechat_client_user()
                     'message' => '你还不是企业成员',
                 ]);
 
-                $userid = $res['userid'];
+                $user_id = $res['userid'];
+                setcookie(USERID_COOKIE_NAME, $user_id, time() + 3600 * 24 * 30, '/');
             }
         }
     }
 
-    if (is_null($userid)) {
+    if (is_null($user_id)) {
         trigger_redirect(work_wechat_build_oauth_redirect_url(uri()));
     }
 
-    return $userid;
+    return $user_id;
 }/*}}}*/
