@@ -6,12 +6,11 @@
 </head>
 <body>
 
-<div style="width: 500px; heigh: 500px; color: red;" onclick="abc();" >abc</div>
+<div style="width: 500px; heigh: 500px; color: red;">abc</div>
 
 <script src="//res.wx.qq.com/open/js/jweixin-1.2.0.js"></script>
 <script>
-function abc()
-{
+wx.ready(function(){
     wx.invoke("selectEnterpriseContact", {
     "fromDepartmentId": -1,
         "mode": "single",
@@ -36,8 +35,6 @@ function abc()
             }
         }
     );
-}
-wx.ready(function(){
 });
 wx.error(function(res){ });
 
