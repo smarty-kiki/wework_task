@@ -44,7 +44,7 @@ wx.config({
     timestamp: {{ $signature_info['timestamp'] }},
     nonceStr: {{ $signature_info['nonce_str'] }},
     signature: {{ $signature_info['signature'] }},
-    jsApiList: []
+    jsApiList: ["selectEnterpriseContact"]
 });
 </script>
 </body>
