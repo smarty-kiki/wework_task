@@ -6,34 +6,38 @@
 </head>
 <body>
 
+<input type="button" onclick="abc();">
+
 <script src="//res.wx.qq.com/open/js/jweixin-1.2.0.js"></script>
 <script>
-wx.ready(function(){
+function abc()
+{
     wx.invoke("selectEnterpriseContact", {
-        "fromDepartmentId": -1,
+    "fromDepartmentId": -1,
         "mode": "single",
         "type": ["user"],
         "selectedDepartmentIds": ["{{ $user_id }}"],
-    },function(res){
-        if (res.err_msg == "selectEnterpriseContact:ok")
-        {
-            if(typeof res.result == 'string')
+        }, function(res) {
+            if (res.err_msg == "selectEnterpriseContact:ok")
             {
-                res.result = JSON.parse(res.result);
-            }
+                if(typeof res.result == 'string')
+                {
+                    res.result = JSON.parse(res.result);
+                }
 
-            var selectedUserList = res.result.userList;
-            for (var i = 0; i < selectedUserList.length; i++)
-            {
-                var user = selectedUserList[i];
-                var userId = user.id;
-                var userName = user.name;
-                var userAvatar= user.avatar;
+                var selectedUserList = res.result.userList;
+                for (var i = 0; i < selectedUserList.length; i++)
+                {
+                    var user = selectedUserList[i];
+                    var userId = user.id;
+                    var userName = user.name;
+                    var userAvatar= user.avatar;
+                }
             }
         }
-    }
-);
-
+    );
+}
+wx.ready(function(){
 });
 wx.error(function(res){ });
 
