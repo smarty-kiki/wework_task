@@ -9,7 +9,7 @@ if_get('/', function ()
     return render('index/index', [
         'user_id' => $user_id,
         'config'  => $config,
-        'signature_info'
+        'signature_info' => $signature_info,
     ]);
 });
 
