@@ -9,11 +9,13 @@ function get_work_wechat_client_user()
     if (is_null($user_id)) {
 
         $user_id = cookie(USERID_COOKIE_NAME);
+        log_module('work_wechat', '从 cookie 中获取 user_id: '.$user_id);
     }
 
     if (is_null($user_id)) {
         $code = input('code');
         if (not_null($code)) {
+            log_module('work_wechat', '通过 code 获取用户信息: '.$code);
             $res = work_wechat_get_user_info($code);
 
             if (work_wechat_if_res_success($res)) {
@@ -22,6 +24,7 @@ function get_work_wechat_client_user()
                     'message' => '你还不是企业成员',
                 ]);
 
+                log_module('work_wechat', '通过 code 获取用户信息 user_id: '.$user_id);
                 $user_id = $res['userid'];
                 setcookie(USERID_COOKIE_NAME, $user_id, time() + 3600 * 24 * 30, '/');
             }
