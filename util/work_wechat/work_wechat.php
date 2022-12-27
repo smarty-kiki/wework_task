@@ -27,7 +27,6 @@ function _work_wechat_closure(closure $action)
 
     if (is_null($access_token)) {
         $access_token = cache_get('work_wechat_access_token');
-        log_module('work_wechat', '缓存中拿 access_token:'.$access_token);
     }
 
     $expire_retry = 3;
@@ -36,7 +35,6 @@ function _work_wechat_closure(closure $action)
 
         if (empty($access_token)) {
             $res = _work_wechat_get_access_token();
-            log_module('work_wechat', '获取 access_token: '.print_r($res, true));
             if (work_wechat_if_res_success($res)) {
                 $access_token = $res['access_token'];
                 cache_set('work_wechat_access_token', $access_token);
@@ -60,6 +58,7 @@ function work_wechat_get_user_info($code)
 {/*{{{*/
     return _work_wechat_closure(function ($access_token) use ($code) {
         log_module('work_wechat', '使用 access_token 获取用户信息:'.$access_token);
+        log_module('work_wechat', '使用 code 获取用户信息:'.$code);
         return http_json(WORK_WECHAT_API_PREFIX.'/auth/getuserinfo?'.http_build_query([
             'access_token' => $access_token,
             'code'         => $code,
